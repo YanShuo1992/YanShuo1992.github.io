@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shuo YAN</title>
+  <meta name="description" content="Shuo YAN, PhD candidate at Macquarie University, working on AI agents for AIoT.">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #1f2328;
+      --muted: #5b636e;
+      --faint: #8b949e;
+      --line: #e6e8eb;
+      --accent: #0b6e99;
+      --accent-soft: #e7f3f8;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f1216;
+        --text: #e6e8eb;
+        --muted: #a3acb7;
+        --faint: #6e7781;
+        --line: #262c33;
+        --accent: #5cb8e0;
+        --accent-soft: #14303d;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .page {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 56px 24px 40px;
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 56px;
+    }
+
+    /* Sidebar: photo, name, position, links. */
+    .side { position: sticky; top: 56px; align-self: start; }
+    .photo {
+      width: 160px; height: 160px; border-radius: 50%;
+      object-fit: cover; display: block;
+      background: var(--accent-soft); color: var(--accent);
+      font-size: 48px; font-weight: 600; letter-spacing: 1px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .side h1 { margin: 0 0 4px; font-size: 26px; line-height: 1.25; }
+    .role { margin: 0; color: var(--muted); font-size: 15px; }
+    .links { list-style: none; padding: 0; margin: 20px 0 0; font-size: 15px; }
+    .links li { margin: 6px 0; }
+
+    /* Main column. */
+    section { margin-bottom: 40px; }
+    h2 {
+      font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); margin: 0 0 14px; padding-bottom: 8px; border-bottom: 1px solid var(--line);
+    }
+    p { margin: 0 0 12px; }
+    ul.plain { margin: 0; padding-left: 20px; }
+    ul.plain li { margin: 6px 0; }
+
+    .news { list-style: none; padding: 0; margin: 0; }
+    .news li { display: grid; grid-template-columns: 84px 1fr; gap: 12px; margin: 8px 0; }
+    .news .date { color: var(--faint); font-variant-numeric: tabular-nums; }
+
+    .pub { display: grid; grid-template-columns: 96px 1fr; gap: 16px; margin: 0 0 20px; }
+    .venue {
+      align-self: start; text-align: center; font-size: 12px; font-weight: 700;
+      color: var(--accent); background: var(--accent-soft); border-radius: 4px; padding: 3px 6px;
+    }
+    .pub .title { font-weight: 600; }
+    .pub .authors, .pub .where { color: var(--muted); font-size: 15px; }
+    .pub .me { color: var(--text); font-weight: 600; }
+    .pub .actions a { font-size: 14px; margin-right: 12px; }
+
+
+    footer {
+      grid-column: 1 / -1; color: var(--faint); font-size: 13px;
+      border-top: 1px solid var(--line); padding-top: 16px;
+    }
+
+    @media (max-width: 760px) {
+      .page { grid-template-columns: 1fr; gap: 32px; padding-top: 32px; padding-left: 16px; padding-right: 16px; }
+      .side { position: static; text-align: center; }
+      .photo { margin: 0 auto; }
+      .links { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 16px; }
+      .links li { margin: 0; }
+      .pub { grid-template-columns: 1fr; gap: 6px; }
+      .venue { justify-self: start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <aside class="side">
+      <!-- To add a photo: <img class="photo" src="photo.jpg" alt="Shuo YAN"> -->
+      <h1>Shuo YAN</h1>
+      <p class="role">PhD Candidate<br>Macquarie University</p>
+      <ul class="links">
+        <!-- <li><a href="mailto:EMAIL">Email</a></li> -->
+        <!-- <li><a href="SCHOLAR_URL">Google Scholar</a></li> -->
+        <li><a href="https://github.com/YanShuo1992">GitHub</a></li>
+        <!-- <li><a href="LINKEDIN_URL">LinkedIn</a></li> -->
+        <!-- <li><a href="cv.pdf">CV</a></li> -->
+      </ul>
+    </aside>
+
+    <main>
+      <section id="about">
+        <h2>About</h2>
+        <p>
+          I am a PhD candidate at Macquarie University, advised by
+          <a href="https://ningning-hou.github.io/homepage/">Dr. Ningning Hou</a>.
+          I build <strong>AI agents that perceive, reason about, and act in the physical world through IoT devices</strong>.
+        </p>
+        <p>
+          My research sits at the intersection of AI agents and the Artificial Intelligence of Things (AIoT).
+          I study how networked devices can sense their environment reliably, and how LLM-based agents can turn
+          those observations into decisions and actions with little human intervention.
+          My background is in computer vision, particularly perception for autonomous driving.
+        </p>
+      </section>
+
+      <section id="research">
+        <h2>Research Interests</h2>
+        <ul class="plain">
+          <li><strong>AI agents for AIoT and cyber-physical systems</strong>: LLM-based agents that close the loop from sensing to action.</li>
+          <li><strong>AIoT sensing and networking</strong>: robust signal decoding for low-power wide-area networks such as LoRa.</li>
+          <li><strong>Perception</strong>: computer vision for autonomous driving.</li>
+        </ul>
+      </section>
+
+      <section id="news">
+        <h2>News</h2>
+        <ul class="news">
+          <li><span class="date">2026</span><span>Our paper on adaptive expert routing for weak LoRa signal decoding was accepted to <strong>ICNP 2026</strong>.</span></li>
+          <li><span class="date">2025</span><span>Started my PhD at Macquarie University under the supervision of Dr. Ningning Hou.</span></li>
+        </ul>
+      </section>
+
+      <section id="publications">
+        <h2>Publications</h2>
+        <div class="pub">
+          <span class="venue">ICNP 2026</span>
+          <div>
+            <div class="title">Taming SNR Heterogeneity: Adaptive Expert Routing for Weak LoRa Signal Decoding</div>
+            <div class="authors"><span class="me">Shuo Yan</span>, Ningning Hou, Qiang Yang</div>
+            <div class="where">IEEE International Conference on Network Protocols (ICNP), 2026</div>
+            <!-- Replace with the IEEE Xplore page once the proceedings are online. -->
+            <div class="actions"><a href="https://icnp26.cs.ucr.edu/acceptedpapers.html">Accepted papers</a></div>
+          </div>
+        </div>
+        <!-- <p class="authors" style="color: var(--muted); font-size: 15px;">
+          For a full list, see my <a href="SCHOLAR_URL">Google Scholar</a> profile.
+        </p> -->
+      </section>
+
+      <section id="background">
+        <h2>Background</h2>
+        <p>
+          I started my PhD at Macquarie University in 2025.
+          Before that, I worked in industry on perception for autonomous driving.
+          <!-- Add degree, university and year, and honors or scholarships here. -->
+        </p>
+      </section>
+
+      <!--
+      <section id="teaching">
+        <h2>Teaching</h2>
+        <ul class="plain">
+          <li>Teaching Assistant, COURSE CODE and NAME, Macquarie University, SEMESTER YEAR</li>
+        </ul>
+      </section>
+      -->
+    </main>
+
+    <footer>Last updated: October 2026</footer>
+  </div>
+</body>
+</html>
