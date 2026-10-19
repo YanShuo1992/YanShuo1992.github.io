@@ -47,7 +47,7 @@
 
     /* Sidebar: name, position, links. */
     .side { position: sticky; top: 36px; align-self: start; }
-    .photo { width: 190px; display: block; margin-bottom: 10px; }
+    .photo { width: 190px; height: auto; display: block; margin-bottom: 10px; padding: 4px; border: 1px solid var(--line); }
     .side h1 { margin: 0; font-size: 1rem; line-height: 1.2; }
     .role { margin: 10px 0 20px; font-size: 0.75rem; }
     .links { list-style: none; padding: 0; margin: 0; font-size: 0.75rem; }
@@ -74,6 +74,7 @@
     @media (max-width: 900px) {
       .page { grid-template-columns: 1fr; row-gap: 24px; }
       .side { position: static; }
+      .photo { width: 140px; }
       .links { display: flex; flex-wrap: wrap; gap: 4px 16px; }
       .links li { margin: 0; }
     }
@@ -83,7 +84,7 @@
   <header class="masthead"><a href="./">Shuo YAN</a></header>
   <div class="page">
     <aside class="side">
-      <!-- To add a photo: <img class="photo" src="photo.jpg" alt="Shuo YAN"> -->
+      <img class="photo" src="assets/avatar.jpg" alt="Avatar of Shuo YAN" width="190" height="190">
       <h1>Shuo YAN</h1>
       <p class="role">PhD Candidate<br>Macquarie University</p>
       <ul class="links">
