@@ -14,7 +14,6 @@
       --faint: #9ba1a6;
       --line: #f2f3f3;
       --accent: #52adc8;
-      --tag: #f2f3f3;
     }
 
     * { box-sizing: border-box; }
@@ -67,16 +66,6 @@
     ul.plain { margin: 0; padding-left: 40px; }
     ul.plain li { margin: 0 0 0.5em; }
 
-    .pub { display: grid; grid-template-columns: 110px 1fr; gap: 16px; margin: 0 0 1.2em; }
-    .venue {
-      align-self: start; text-align: center; font-size: 0.7rem; font-weight: 700;
-      color: var(--muted); background: var(--tag); border-radius: 4px; padding: 3px 6px;
-    }
-    .pub .title { font-weight: 700; }
-    .pub .authors, .pub .where { color: var(--muted); font-size: 0.875em; }
-    .pub .me { color: var(--text); font-weight: 700; }
-    .pub .actions a { font-size: 0.875em; margin-right: 12px; }
-
     footer {
       max-width: 1280px; margin: 3em auto 0; padding: 18px; color: var(--faint); font-size: 0.75rem;
       border-top: 1px solid var(--line);
@@ -87,8 +76,6 @@
       .side { position: static; }
       .links { display: flex; flex-wrap: wrap; gap: 4px 16px; }
       .links li { margin: 0; }
-      .pub { grid-template-columns: 1fr; gap: 6px; }
-      .venue { justify-self: start; }
     }
   </style>
 </head>
@@ -136,31 +123,21 @@
 
       <section id="publications">
         <h2>Publications</h2>
-        <div class="pub">
-          <span class="venue">ICNP 2026</span>
-          <div>
-            <div class="title">Taming SNR Heterogeneity: Adaptive Expert Routing for Weak LoRa Signal Decoding</div>
-            <div class="authors"><span class="me">Shuo Yan</span>, Ningning Hou, Qiang Yang</div>
-            <div class="where">IEEE International Conference on Network Protocols (ICNP), 2026 · CCF-B</div>
-            <!-- Replace with the IEEE Xplore page once the proceedings are online. -->
-            <div class="actions"><a href="https://icnp26.cs.ucr.edu/acceptedpapers.html">Accepted papers</a></div>
-          </div>
-        </div>
-        <!-- <p class="authors" style="color: var(--muted); font-size: 15px;">
-          For a full list, see my <a href="SCHOLAR_URL">Google Scholar</a> profile.
-        </p> -->
+        <!-- Link the title to the IEEE Xplore page once the proceedings are online. -->
+        <p class="pub">
+          [<a href="https://icnp26.cs.ucr.edu/">ICNP&rsquo;26</a>]
+          <strong>&ldquo;Taming SNR Heterogeneity: Adaptive Expert Routing for Weak LoRa Signal Decoding&rdquo;</strong><br>
+          <strong>Shuo Yan</strong>, Ningning Hou, Qiang Yang. In IEEE ICNP, Tempe, Arizona, USA, 05&ndash;08 Oct 2026. (CCF-B)
+        </p>
       </section>
 
       <section id="patents">
         <h2>Patents</h2>
-        <div class="pub">
-          <span class="venue">Patent 2021</span>
-          <div>
-            <div class="title">Self-supervised Fisheye Camera Image Feature Point Extraction Method, Device, and Storage Medium</div>
-            <div class="authors"><span class="me">Shuo Yan</span>, Rugao Zhang, Zhenghua Yu</div>
-            <div class="where">Chinese Patent Application No. 202111338016.X, filed December 2021</div>
-          </div>
-        </div>
+        <p class="pub">
+          [Patent&rsquo;21]
+          <strong>&ldquo;Self-supervised Fisheye Camera Image Feature Point Extraction Method, Device, and Storage Medium&rdquo;</strong><br>
+          <strong>Shuo Yan</strong>, Rugao Zhang, Zhenghua Yu. Chinese Patent Application No. 202111338016.X, filed Dec 2021.
+        </p>
       </section>
 
       <section id="teaching">
