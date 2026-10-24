@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The View from Nowhere · Population-Centered Agent Evolution</title>
+<style>
+  :root {
+    --fg: #1a1a1a;
+    --muted: #555;
+    --accent: #1858a8;
+    --bg: #fff;
+    --rule: #e5e5e5;
+  }
+  html, body { background: var(--bg); color: var(--fg); }
+  body {
+    font-family: "Source Serif Pro", "Georgia", "Times New Roman", serif;
+    font-size: 17px;
+    line-height: 1.6;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 24px 96px;
+  }
+  header { text-align: center; margin-bottom: 32px; }
+  h1 {
+    font-size: 28px;
+    line-height: 1.25;
+    margin: 0 0 12px;
+    font-weight: 600;
+  }
+  header .subtitle {
+    color: var(--muted);
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+  header .authors { color: var(--fg); }
+  header .subtitle a { color: var(--fg); text-decoration: none; }
+  header .subtitle a:hover { color: var(--accent); }
+  nav.resources {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin: 28px 0 8px;
+  }
+  nav.resources a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--fg);
+    font-family: "Helvetica Neue", "Arial", sans-serif;
+    font-size: 14px;
+    transition: all 0.15s;
+  }
+  nav.resources a:hover {
+    background: #f6f6f6;
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  nav.resources a.primary {
+    background: var(--fg);
+    color: #fff;
+    border-color: var(--fg);
+  }
+  nav.resources a.primary:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+  h2 {
+    font-size: 22px;
+    font-weight: 600;
+    margin: 48px 0 12px;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 6px;
+  }
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 24px 0 8px;
+  }
+  p { margin: 0 0 14px; }
+  a { color: var(--accent); }
+  figure {
+    margin: 24px 0;
+    text-align: center;
+  }
+  figure img, figure object {
+    max-width: 100%;
+    height: auto;
+  }
+  figcaption {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 8px;
+    font-style: italic;
+    line-height: 1.4;
+  }
+  .side-by-side {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .side-by-side figure { margin: 0; }
+  .three-up {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 24px 0 0;
+  }
+  .three-up figure { margin: 0; }
+  .motivation-row {
+    display: grid;
+    grid-template-columns: 0.228fr 0.379fr 0.379fr;
+    gap: 10px;
+    align-items: start;
+    margin: 24px 0 0;
+  }
+  .motivation-row img { width: 100%; height: auto; }
+  ul.highlights { padding-left: 20px; margin: 0 0 14px; }
+  ul.highlights li { margin-bottom: 6px; }
+  table {
+    border-collapse: collapse;
+    margin: 16px auto;
+    font-family: "Helvetica Neue", "Arial", sans-serif;
+    font-size: 14px;
+  }
+  th, td { padding: 5px 12px; text-align: center; }
+  th { border-bottom: 1px solid var(--fg); font-weight: 600; }
+  thead tr:first-child th { border-top: 1.5px solid var(--fg); }
+  tbody tr:last-child td { border-bottom: 1.5px solid var(--fg); }
+  tbody tr.group-start td { border-top: 1px solid var(--rule); }
+  td:first-child, th:first-child { text-align: left; }
+  .table-wrap { overflow-x: auto; }
+  .table-caption {
+    font-size: 14px;
+    color: var(--muted);
+    font-style: italic;
+    line-height: 1.4;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  pre {
+    background: #f5f5f5;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 13px;
+    overflow-x: auto;
+    font-family: "SF Mono", "Consolas", "Monaco", monospace;
+  }
+  code {
+    background: #f0f0f0;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-family: "SF Mono", "Consolas", "Monaco", monospace;
+    font-size: 14px;
+  }
+  pre code { background: none; padding: 0; }
+  .key-number {
+    background: #f8f8f8;
+    border-left: 3px solid var(--accent);
+    padding: 12px 16px;
+    margin: 16px 0;
+    font-size: 15px;
+  }
+  footer {
+    margin-top: 64px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  @media (max-width: 600px) {
+    .side-by-side, .three-up, .motivation-row { grid-template-columns: 1fr; }
+    body { padding: 24px 16px 64px; }
+    h1 { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>The View from Nowhere:<br>Population-Centered Agent Evolution</h1>
+  <div class="subtitle authors">
+    <a href="https://yanshuo1992.github.io/">Shuo Yan</a><sup>1</sup>,
+    <a href="https://ningning-hou.github.io/homepage/">Ningning Hou</a><sup>1</sup>,
+    Haoyu He<sup>2</sup>,
+    Haochen Pei<sup>1</sup>,
+    Shang Gao<sup>1</sup>
+  </div>
+  <div class="subtitle"><sup>1</sup>Macquarie University &nbsp;&nbsp; <sup>2</sup>Monash University</div>
+</header>
+
+<nav class="resources">
+  <!-- Add a Paper button linking to arXiv once the paper is online. -->
+  <a class="primary" href="https://github.com/YanShuo1992/PCE">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+    Code · GitHub
+  </a>
+</nav>
+
+
+<figure>
+  <img src="figs/fig1_overview.png" alt="Parent-local and population-centered evolution">
+  <figcaption>
+    Figure 2. Parent-local and population-centered evolution. (a) Parent-local evolution diagnoses
+    and modifies an agent using execution records associated with the selected parent.
+    (b) Population-centered evolution distils task records and modification histories across the
+    population into a population block. The block summarizes outcome evidence, identifies
+    cross-agent observations, and suggests candidate files for inspection. Diagnosis combines this
+    block with the selected parent’s records and source code to propose a harness modification.
+  </figcaption>
+</figure>
+
+<h2>Abstract</h2>
+<p>
+Self-improving AI systems can revise the designs that govern their own behavior. Yet existing
+approaches center improvement on selected parent agents and their evolutionary experience, leaving
+the broader population largely underused. We identify a substantial gap between population coverage
+(i.e., the tasks solved by at least one evolved variant) and the performance of the best individual
+agent. This gap shows that useful capabilities and diagnostic evidence emerge across the population
+without being consolidated into its leading agents.
+</p>
+<p>
+These observations motivate the <strong>view from nowhere</strong>, a principle for agent evolution:
+an agent should be improved by interpreting its behavior through population-wide patterns of
+success, failure, and prior self-modification. We instantiate this principle as
+<strong>Population-Centered Evolution (PCE)</strong>. PCE distils task records and modification
+histories from the population into a population block, which captures recurring failures,
+complementary successes, and the effects of previously attempted modifications to guide
+improvements to a selected parent’s harness.
+</p>
+<p>
+Under matched models, initial harnesses, and evolution schedules, PCE achieves 72.1% success on
+SWE-bench Verified and 96.7% on Polyglot, improving over a strong group-evolution baseline by 3.2
+and 5.9 percentage points. In our evaluation, PCE reduces the gap between population coverage and
+best-agent performance by one-third on SWE-bench and closes it on Polyglot. These results suggest
+that treating the population as evidence&mdash;not merely as candidates for selection&mdash;provides
+a complementary principle for agent evolution.
+</p>
+
+<h2>Introduction</h2>
+<p>
+Yet prior work has not systematically measured the gap between what an evolutionary population
+collectively solves and what its best individual agent achieves, or examined how this gap can guide
+improvement. We define <em>population coverage</em> as the proportion of tasks solved by at least
+one evolved variant. As shown in Figure 1a, in one of our GEA runs the evolved population covers 9
+more of the 60 held-in tasks than its best individual agent, corresponding to a 15.0
+percentage-point gap. This gap shows that successful outcomes remain distributed across the
+population rather than being fully consolidated into its leading agent. The associated task records
+allow us to compare variants that succeed and fail on the same task. The population should therefore
+be treated not only as a pool for parent selection, but also as comparative evidence for deciding
+how a selected parent should improve.
+</p>
+<p>
+These observations motivate the <em>view from nowhere</em> as a principle for agent evolution. It
+holds that decisions about how to improve an agent should be grounded in patterns of success,
+failure, and prior self-modification across the population. For a given task, population outcomes
+show whether a failure is isolated or recurring, execution records reveal how successful and
+unsuccessful variants differ, and modification histories indicate which remedies have already been
+attempted. Together, these comparisons provide a broader basis for diagnosing a selected parent and
+guiding its improvement.
+</p>
+
+<div class="motivation-row">
+  <img src="figs/fig2a_population_potential.png" alt="Figure 1a">
+  <img src="figs/fig2b_gea_diagnosis.png" alt="Figure 1b">
+  <img src="figs/fig2c_ours_diagnosis.png" alt="Figure 1c">
+</div>
+<figure style="margin-top: 0">
+  <figcaption>
+    Figure 1. Population potential and task-level evidence. (a) The union of tasks solved by the GEA
+    population exceeds the performance of its best individual agent by 15.0 percentage points
+    (9 tasks in Held-in 60). (b) Parent-local diagnosis uses one parent trajectory to identify
+    missed API cases and add verification instructions, while the other 15 population records are
+    not inspected. (c) Population-centered diagnosis uses patterns across 17 records to identify a
+    missing patch check and add bounded repair logic.
+  </figcaption>
+</figure>
+
+<p>In summary, we make three contributions:</p>
+<ol>
+  <li>We identify and quantify a previously overlooked gap between population coverage and
+  best-agent performance, and we formulate the <em>view from nowhere</em> as a principle for
+  capturing useful information across the population to guide agent evolution.</li>
+  <li>We introduce PCE, which distils population-wide experience into a population block that
+  guides improvements to a selected parent’s harness.</li>
+  <li>PCE improves performance and generalization, narrows the population-coverage gap, and achieves
+  these gains with lower total token consumption than baselines.</li>
+</ol>
+
+<h2>Population-Centered Evolution</h2>
+<p>
+PCE operates population-centered evolution through two stages, as shown in Figure 2. Population
+distillation compares task records and modification histories across evaluated agent variants and
+summarizes the findings in a population block. Diagnosis then checks this population-level account
+against a selected parent's records and source code before proposing a harness modification.
+</p>
+<p>
+We note that PCE distinguishes the variants used as evidence from those eligible for parent
+selection. It maintains a population <i>𝒱</i> containing all evaluated agent variants whose task
+records are available, and an archive <i>𝒜</i> ⊆ <i>𝒱</i> containing the variants eligible to
+become parents. Each variant is associated with its harness, task records, and history of
+self-modification. A variant can therefore inform future improvements even when it is not selected
+as a parent.
+</p>
+
+<h3>Population Distillation</h3>
+<p>
+For the task selected to diagnose a parent, population distillation considers all available task
+records in <i>𝒱</i>, including the initial agent's record when available. Each record contains an
+execution log, a submitted task patch, and an evaluation outcome. The corresponding harness can be
+reconstructed from the initial source and the variant's chain of self-modifications. These materials
+allow distillation to compare not only which variants succeed or fail, but also how their execution
+and harness designs differ.
+</p>
+<p>
+Population distillation combines programmatic measurement with agent-based analysis. A program first
+counts the outcomes across all available records. The distillation agent then inspects relevant
+execution logs, task patches, harness source, and earlier self-modifications. It compares successful
+and unsuccessful variants, identifies recurring outcomes, and examines whether previous harness
+changes resolved or preserved the observed behavior. Since the full records can be large, the agent
+chooses which records and source files to inspect within its analysis budget.
+</p>
+<p>
+The resulting population block contains three fields. <em>Outcome evidence</em> reports the
+program-computed distribution of task outcomes across the population. A <em>cross-agent
+observation</em> summarizes a pattern found by comparing variants and provides a hypothesis about
+why their outcomes differ. <em>Candidate files</em> identify parts of the harness that may implement
+the relevant behavior and should be examined during diagnosis. This field is left empty when
+distillation cannot identify a plausible location. Separating measured outcomes from their
+interpretation preserves a factual population summary while giving diagnosis a focused starting
+point without prescribing the modification.
+</p>
+
+<h3>Diagnosis and Harness Modification</h3>
+<p>
+The population block provides a diagnostic hypothesis rather than prescribing a modification.
+Diagnosis combines this block with the selected parent's source code and task records to determine
+whether the population-level pattern applies to the current harness. It examines the candidate files
+when provided, but may inspect other parts of the harness as needed. A mechanism associated with
+successful variants may be absent from the parent, while an earlier modification may already be
+present but remain insufficient. Diagnosis uses the parent's execution behavior and implementation
+to distinguish between these possibilities.
+</p>
+<p>
+Based on this assessment, diagnosis proposes one harness modification and describes how it should
+be implemented. The self-modification step applies the proposal to a copy of the parent's harness,
+producing a child agent. The modification may change the agent's prompts, tools, or execution
+workflow, while the foundation model and inference limits remain fixed. The child is then passed to
+the evaluation stage of the evolution loop.
+</p>
+<div class="key-number">
+The SWE-bench task django-12209 in Figure 1c illustrates the full process. Across 17 task records,
+the outcome evidence reported 6 solved patches, 10 empty patches, and 1 test-only patch. Population
+distillation found that truncation occurred under different outcomes and that increasing the retry
+budget had not consistently prevented empty patches. The observation and candidate files directed
+diagnosis toward the parent's episode-completion logic. Inspection then showed that the episode
+could finish without checking whether a patch had been produced. The child harness then added this
+check and performed bounded repairs when the patch remained empty. This example shows how
+population-wide patterns are converted into a hypothesis, validated against the selected parent, and
+implemented as a concrete harness change.
+</div>
+
+<h2>Experiments Setup</h2>
+<p>
+We evaluate PCE on SWE-bench Verified and Polyglot. SWE-bench Verified evaluates repository-level
+issue resolution, while Polyglot contains 225 coding tasks across six programming languages.
+Following DGM, we use 200 SWE-bench Verified tasks and all 225 Polyglot tasks. For each benchmark,
+60 tasks are held in for evolution. The remaining 140 SWE-bench tasks and 165 Polyglot tasks are held
+out for final evaluation, forming Overall 200 and Overall 225. We also evaluate on an additional set
+of 60 SWE-bench tasks spanning 12 repositories.
+</p>
+<p>
+We compare PCE with GEA, the closest group-evolution baseline. To isolate the effect of
+population-centered evolution, both methods use the same foundation models, initial harness,
+parent-selection procedure, diagnosis prompt, modifiable files, and evaluation protocol. Each method
+runs for ten generations and produces two children per generation. DeepSeek Flash performs task
+execution and self-modification. DeepSeek Pro performs diagnosis for both methods and population
+distillation for PCE. We also evaluate the shared initial agent as a reference.
+</p>
+
+<h2>Results and Analysis</h2>
+
+<h3>① Agent Performance and Generalization</h3>
+<p><strong>RQ1: Does PCE evolve stronger agents that generalize beyond the search evaluation?</strong></p>
+<div class="key-number">
+<strong>PCE outperforms GEA on both benchmarks under matched experimental settings.</strong>
+</div>
+<p>
+Table 1 reports the performance of the best agents evolved within 10 generations. Both GEA and PCE
+improve substantially over the shared initial agent. PCE reaches an Overall success rate of 72.1% on
+SWE-bench and 96.7% on Polyglot, exceeding GEA by 3.2 and 5.9 percentage points, respectively. The
+Polyglot result is particularly notable because PCE continues to improve performance even when GEA
+already solves more than 90% of the tasks.
+</p>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th>Benchmark</th><th>Method</th><th>Model</th><th>Gen.</th><th>Best ↑</th><th>Overall ↑</th></tr>
+  </thead>
+  <tbody>
+    <tr class="group-start"><td>SWE-bench</td><td>OpenHands<sup>†</sup></td><td>GPT-5</td><td>N/A</td><td>N/A</td><td>71.8</td></tr>
+    <tr class="group-start"><td></td><td>DGM</td><td>Claude 3.5 Sonnet</td><td>80</td><td>—</td><td>50.0</td></tr>
+    <tr><td></td><td>DGM<sup>‡</sup></td><td>Claude 3.7 Sonnet</td><td>80</td><td>—</td><td>59.5</td></tr>
+    <tr><td></td><td>DGM<sup>‡</sup></td><td>o3-mini</td><td>80</td><td>—</td><td>33.0</td></tr>
+    <tr><td></td><td>DGM (GEA)<sup>†</sup></td><td>Haiku/Sonnet 4.5</td><td>60</td><td>—</td><td>56.7</td></tr>
+    <tr><td></td><td>GEA<sup>†</sup></td><td>Haiku/Sonnet 4.5</td><td>30</td><td>—</td><td>71.0</td></tr>
+    <tr class="group-start"><td></td><td>Initial</td><td>DeepSeek-V4-Flash</td><td>0</td><td>N/A</td><td>52.0</td></tr>
+    <tr><td></td><td>GEA</td><td>DeepSeek-V4-Flash</td><td>10</td><td>71.7</td><td>68.9</td></tr>
+    <tr><td></td><td><strong>PCE</strong></td><td>DeepSeek-V4-Flash</td><td>10</td><td><strong>75.0</strong></td><td><strong>72.1</strong></td></tr>
+    <tr class="group-start"><td>Polyglot</td><td>Aider<sup>†</sup></td><td>GPT-5 (high)</td><td>N/A</td><td>N/A</td><td>52.0</td></tr>
+    <tr class="group-start"><td></td><td>DGM</td><td>o3-mini</td><td>80</td><td>—</td><td>30.7</td></tr>
+    <tr><td></td><td>DGM<sup>‡</sup></td><td>Claude 3.5 Sonnet</td><td>80</td><td>—</td><td>33.3</td></tr>
+    <tr><td></td><td>DGM<sup>‡</sup></td><td>Claude 3.7 Sonnet</td><td>80</td><td>—</td><td>36.8</td></tr>
+    <tr><td></td><td>DGM (GEA)<sup>†</sup></td><td>Haiku/Sonnet 4.5</td><td>40</td><td>—</td><td>68.3</td></tr>
+    <tr><td></td><td>GEA<sup>†</sup></td><td>Haiku/Sonnet 4.5</td><td>20</td><td>—</td><td>88.3</td></tr>
+    <tr class="group-start"><td></td><td>Initial</td><td>DeepSeek-V4.1-Flash</td><td>0</td><td>N/A</td><td>65.1</td></tr>
+    <tr><td></td><td>GEA</td><td>DeepSeek-V4.1-Flash</td><td>10</td><td>90.0</td><td>90.8</td></tr>
+    <tr><td></td><td><strong>PCE</strong></td><td>DeepSeek-V4.1-Flash</td><td>10</td><td><strong>100.0</strong></td><td><strong>96.7</strong></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="table-caption">
+  Table 1. Performance (%). Best: highest Held-in 60 search score. †: reported by GEA. ‡: model
+  transfer.
+</div>
+
+<p>
+The gains are not limited to a single search or evaluation. Across two independent SWE-bench runs
+for each method, both PCE runs achieve higher best search scores than either GEA run, as reported in
+Table 2. When the selected agents are independently evaluated 5 times on Held-in 60, PCE retains a
+mean advantage of 4.0 percentage points on both benchmarks (Figure 3c). PCE also outperforms GEA on
+all three held-out task sets. Since held-out tasks constitute the majority of Overall 200 and
+Overall 225, these results show that the gains extend beyond the tasks used during evolution.
+</p>
+<p>
+For context, Table 1 also reports published results for DGM, GEA, OpenHands, and Aider under their
+original models and protocols. These values are reference points rather than controlled
+comparisons. Our main conclusion is based on the matched PCE and GEA runs.
+</p>
+
+<div class="three-up">
+  <figure>
+    <img src="figs/fig4a_swe.svg" alt="Figure 3a">
+    <figcaption>(a) SWE-bench search</figcaption>
+  </figure>
+  <figure>
+    <img src="figs/fig4b_polyglot.svg" alt="Figure 3b">
+    <figcaption>(b) Polyglot search</figcaption>
+  </figure>
+  <figure>
+    <img src="figs/fig4c_heldin.svg" alt="Figure 3c">
+    <figcaption>(c) Repeated evaluations</figcaption>
+  </figure>
+</div>
+<figure style="margin-top: 0">
+  <figcaption>
+    Figure 3. Search scores and repeated-evaluation results on Held-in 60. (a, b) Best-so-far search
+    score across the main ten-generation run, with two children produced in each generation.
+    (c) Mean success rate of the shared initial agent and the selected GEA and PCE agents over five
+    independent evaluations after evolution.
+  </figcaption>
+</figure>
+
+<h3>② Population-Wide Improvement and Consolidation</h3>
+<p><strong>RQ2: Does PCE consolidate population-wide successes into stronger individual agents?</strong></p>
+<div class="key-number">
+<strong>PCE improves not only the best agent, but also the broader set of leading variants.</strong>
+</div>
+<p>
+Table 2 reports the highest search score and the minimum score among the top three and top five
+evolved variants. PCE improves all three measures on both benchmarks. On SWE-bench, even the
+fifth-ranked PCE variant performs comparably to GEA's best variant. On Polyglot, the fifth-ranked PCE
+variant outperforms GEA's best. The gains therefore extend beyond a single exceptional agent.
+</p>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th>Benchmark</th><th>Method</th><th>Top-1 ↑</th><th>Top-3 min. ↑</th><th>Top-5 min. ↑</th><th>Union</th><th>Gap ↓</th></tr>
+  </thead>
+  <tbody>
+    <tr class="group-start"><td>SWE-bench</td><td>GEA</td><td>70.0 ± 2.4</td><td>66.7 ± 2.4</td><td>66.7 ± 2.4</td><td>84.2 ± 3.5</td><td>14.2 ± 1.2</td></tr>
+    <tr><td></td><td>PCE</td><td><strong>75.0</strong> ± 0.0</td><td><strong>72.5</strong> ± 1.2</td><td><strong>70.8</strong> ± 1.2</td><td>85.0 ± 0.0</td><td><strong>10.0</strong> ± 0.0</td></tr>
+    <tr class="group-start"><td>Polyglot</td><td>GEA</td><td>90.0</td><td>85.0</td><td>83.3</td><td>100.0</td><td>10.0</td></tr>
+    <tr><td></td><td>PCE</td><td><strong>100.0</strong></td><td><strong>98.3</strong></td><td><strong>96.7</strong></td><td>100.0</td><td><strong>0.0</strong></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="table-caption">
+  Table 2. Leading-variant performance and population coverage on Held-in 60 (%). Top-1 is the
+  highest search score, and Top-<i>k</i> min. is the lowest score among the top-<i>k</i> evolved
+  variants. Union is the fraction of tasks solved by at least one evaluated child, and Gap is Union
+  minus Top-1 in percentage points. SWE-bench reports mean ± sample standard deviation over two runs;
+  Polyglot reports one run.
+</div>
+
+<p>
+PCE also brings its leading agents closer to what the population collectively solves. Population
+coverage measures the fraction of tasks solved by at least one evaluated variant, while the coverage
+gap is the difference between this union and the best-agent score. On SWE-bench, PCE and GEA achieve
+similar population coverage, but PCE reduces the mean gap from 14.2 to 10.0 percentage points. On
+Polyglot, both populations cover all 60 held-in tasks. GEA retains a 10.0-point gap, whereas PCE
+closes the gap with a single agent that solves the full task set.
+</p>
+<p>
+The reduction does not result from PCE exploring a substantially larger set of solvable tasks.
+Instead, with similar population coverage, PCE produces leading variants that capture more of the
+successful outcomes distributed across the population. This result directly supports the central
+motivation for using population-wide evidence during agent evolution.
+</p>
+
+<h3>③ Value of Population-Wide Evidence</h3>
+<p><strong>RQ3: Does population-wide evidence provide gains beyond additional parent-only analysis?</strong></p>
+<p>
+We conduct an ablation on Polyglot that compares GEA, parent-only distillation, and PCE under the
+same evolution and evaluation settings. Parent-only distillation uses the same distillation model,
+tools, step budget, and output format as PCE, but restricts its inputs to the selected parents' task
+records, modification histories, and source code. This control separates the value of
+population-wide evidence from the effect of adding another analysis step.
+</p>
+<div class="key-number">
+<strong>Population-wide evidence improves performance beyond parent-only distillation.</strong>
+</div>
+<p>
+As shown in Table 3, parent-only distillation achieves a best search score of 91.7%, close to GEA's
+90.0%. Both methods obtain the same mean success rate of 92.0% across 5 evaluations of their selected
+agents. PCE instead reaches a perfect search score and retains a mean success rate of 96.0%,
+4 percentage points above both alternatives.
+</p>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th>Method</th><th>Best</th><th>Mean ± sd</th><th>Intersection</th><th>Union</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>GEA</td><td>90.0</td><td>92.0 ± 2.5</td><td>85.0</td><td>100.0</td></tr>
+    <tr><td>Parent distillation</td><td>91.7</td><td>92.0 ± 4.3</td><td>78.3</td><td>98.3</td></tr>
+    <tr><td>Population distillation (PCE)</td><td><strong>100.0</strong></td><td><strong>96.0</strong> ± 2.8</td><td><strong>88.3</strong></td><td>100.0</td></tr>
+  </tbody>
+</table>
+</div>
+<div class="table-caption">
+  Table 3. Parent-only distillation ablation on Polyglot Held-in 60 (%). Best is the highest search
+  score during evolution. The selected agent is then evaluated five times. Mean ± sd summarizes these
+  evaluations, Intersection is the fraction of tasks solved in every evaluation, and Union is the
+  fraction solved at least once. Parent-only distillation matches PCE's distillation model, tools,
+  budget, and output format but uses only evidence from the selected parents.
+</div>
+
+<p>
+The repeated evaluations further show that PCE solves more tasks consistently. All three methods
+solve nearly the full task set at least once, as reflected by their similar Union scores. PCE
+nevertheless achieves the highest Intersection, solving 88.3% of the tasks in every evaluation,
+compared with 85.0% for GEA and 78.3% for parent-only distillation. Within this Polyglot ablation,
+the results show that the gains come from broadening the evidence beyond the selected parents, rather
+than from additional analysis alone.
+</p>
+<p>
+<strong>Effect on diagnostic proposals.</strong>
+We also conduct a fixed-context probe to examine how the supplied evidence changes diagnosis. Across
+3 SWE-bench contexts, we hold the focal parent, source code, patch history, and task record fixed,
+vary the auxiliary evidence, and generate five proposals per condition. Adding a population block
+changes the main target of diagnosis in two of three contexts. On Sphinx-7748 task, proposals
+addressing truncation recovery increase from two of five to all five. On Sphinx-9229 task, the
+population block produces two proposals for a post-episode patch check, while GEA and the
+raw-trajectory controls produce only instruction-level changes. No comparable shift appears on
+Sphinx-8638. These results suggest that a population block can redirect diagnosis from local
+instruction refinement toward changes in the agent’s execution logic. They also indicate that
+distilling cross-agent patterns can provide guidance that is not reproduced by simply supplying
+additional raw trajectories. Since the proposals are not implemented or evaluated, this analysis
+characterizes how population evidence affects diagnostic behavior rather than its downstream
+performance.
+</p>
+
+<h3>④ Performance Gains and Token Cost</h3>
+<p><strong>RQ4: Does PCE achieve better performance at the cost of higher token consumption?</strong></p>
+<div class="key-number">
+<strong>No. PCE achieves higher performance while using substantially fewer tokens.</strong>
+</div>
+<p>
+Table 4 shows that PCE reduces total token consumption by 36% on SWE-bench and 59% on Polyglot
+relative to GEA. These totals cover the complete evolution run, including task execution, diagnosis,
+self-modification, and population distillation. PCE also makes fewer model requests on both
+benchmarks. Its performance gains therefore do not come from a larger inference budget.
+</p>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th rowspan="2">Metric</th><th colspan="2">SWE-bench</th><th colspan="2">Polyglot</th></tr>
+    <tr><th>GEA</th><th>PCE</th><th>GEA</th><th>PCE</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Overall success (%) ↑</td><td>68.9</td><td><strong>72.1</strong></td><td>90.8</td><td><strong>96.7</strong></td></tr>
+    <tr><td>Total tokens (billions) ↓</td><td>2.98</td><td><strong>1.92</strong></td><td>0.99</td><td><strong>0.41</strong></td></tr>
+    <tr><td>Total requests ↓</td><td>114,629</td><td><strong>69,539</strong></td><td>52,034</td><td><strong>28,823</strong></td></tr>
+    <tr class="group-start"><td>Distillation calls</td><td>0</td><td>758</td><td>0</td><td>775</td></tr>
+    <tr class="group-start"><td>Evaluation episodes</td><td>1,100</td><td>1,200</td><td>1,147</td><td>1,177</td></tr>
+    <tr><td>Mean trajectory length, solved (k chars) ↓</td><td>215</td><td><strong>146</strong></td><td>101</td><td><strong>65</strong></td></tr>
+    <tr><td>Mean trajectory length, unsolved (k chars) ↓</td><td>354</td><td><strong>242</strong></td><td>126</td><td><strong>60</strong></td></tr>
+    <tr><td>Episodes above 500k chars ↓</td><td>158</td><td><strong>45</strong></td><td>4</td><td><strong>1</strong></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="table-caption">
+  Table 4. Performance and resource use in the main evolution runs. Token and request counts are
+  provider totals for the complete run, covering task execution, diagnosis, self-modification, and
+  population distillation. Distillation calls report the number made by the distillation agent. An
+  evaluation episode is one task attempt, and trajectory length is measured in characters. We report
+  tokens and requests rather than monetary cost because provider prices vary over time.
+</div>
+
+<p>
+The reduction is not a result of evaluating fewer task episodes. PCE evaluates more episodes than GEA
+on both benchmarks, but produces substantially shorter trajectories for both solved and unsolved
+attempts. Extremely long trajectories also become less frequent. On SWE-bench, the number of
+trajectories exceeding 500,000 characters falls from 158 to 45. PCE therefore performs more
+evaluations while consuming fewer tokens overall.
+</p>
+<p>
+These results suggest that population-wide evidence makes the evolutionary process more directed.
+Population distillation identifies recurring outcomes and informs harness changes that can affect
+later task attempts. Figure 1c provides one example, where a recurring empty-patch pattern leads to
+an explicit patch check and bounded repair procedure. This case does not by itself explain the
+aggregate savings, but it illustrates how population-guided modifications can prevent inefficient
+behavior from recurring. PCE therefore improves both performance and token efficiency, rather than
+exchanging a larger inference budget for stronger agents.
+</p>
+
+<!-- Add a Cite section with the BibTeX once the paper is on arXiv. -->
+
+<footer>
+  Code released under the Apache 2.0 License.
+</footer>
+
+</body>
+</html>
