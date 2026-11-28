@@ -243,8 +243,8 @@ improvements to a selected parent’s harness.
 <p>
 Under matched models, initial harnesses, and evolution schedules, PCE achieves 72.1% success on
 SWE-bench Verified and 96.7% on Polyglot, improving over a strong group-evolution baseline by 3.2
-and 5.9 percentage points. In our evaluation, PCE reduces the gap between population coverage and
-best-agent performance by one-third on SWE-bench and closes it on Polyglot. These results suggest
+and 5.9 percentage points. Across independent runs, PCE reduces the gap between population coverage and
+best-agent performance by 30% on SWE-bench and all but closes it on Polyglot. These results suggest
 that treating the population as evidence, not merely as candidates for selection, provides
 a complementary principle for agent evolution.
 </p>
@@ -295,7 +295,8 @@ guiding its improvement.
   capturing useful information across the population to guide agent evolution.</li>
   <li>We introduce PCE, which distils population-wide experience into a population block that
   guides improvements to a selected parent’s harness.</li>
-  <li>PCE improves performance and generalization, narrows the population-coverage gap, and achieves
+  <li>PCE improves performance and generalization, narrows the population-coverage gap,
+  consolidates more population-wide successes into individual agents, and achieves
   these gains with lower total token consumption than baselines.</li>
 </ol>
 
@@ -384,8 +385,10 @@ of 60 SWE-bench tasks spanning 12 repositories.
 <p>
 We compare PCE with GEA, the closest group-evolution baseline. To isolate the effect of
 population-centered evolution, both methods use the same foundation models, initial harness,
-parent-selection procedure, diagnosis prompt, modifiable files, and evaluation protocol. Each method
-runs for ten generations and produces two children per generation. DeepSeek Flash performs task
+parent-selection procedure, diagnosis prompt, modifiable files, and evaluation protocol. Each method runs for ten generations and produces two children per generation. We conduct two
+independent runs of each method on SWE-bench and three on Polyglot. The Best column of Table 1,
+Table 2, and Figures 3a and 3b report all runs. Unless stated otherwise, all other results come
+from the main run of each benchmark. DeepSeek Flash performs task
 execution and self-modification. DeepSeek Pro performs diagnosis for both methods and population
 distillation for PCE. We also evaluate the shared initial agent as a reference.
 </p>
@@ -401,8 +404,8 @@ distillation for PCE. We also evaluate the shared initial agent as a reference.
 Table 1 reports the performance of the best agents evolved within 10 generations. Both GEA and PCE
 improve substantially over the shared initial agent. PCE reaches an Overall success rate of 72.1% on
 SWE-bench and 96.7% on Polyglot, exceeding GEA by 3.2 and 5.9 percentage points, respectively. The
-Polyglot result is particularly notable because PCE continues to improve performance even when GEA
-already solves more than 90% of the tasks.
+Polyglot result is particularly notable because PCE continues to improve performance even when GEA already solves more than 90% of the tasks in the
+Overall evaluation.
 </p>
 
 <div class="table-wrap">
@@ -418,8 +421,8 @@ already solves more than 90% of the tasks.
     <tr><td></td><td>DGM (GEA)<sup>†</sup></td><td>Haiku/Sonnet 4.5</td><td>60</td><td>—</td><td>56.7</td></tr>
     <tr><td></td><td>GEA<sup>†</sup></td><td>Haiku/Sonnet 4.5</td><td>30</td><td>—</td><td>71.0</td></tr>
     <tr class="group-start"><td></td><td>Initial</td><td>DeepSeek-V4-Flash</td><td>0</td><td>N/A</td><td>52.0</td></tr>
-    <tr><td></td><td>GEA</td><td>DeepSeek-V4-Flash</td><td>10</td><td>71.7</td><td>68.9</td></tr>
-    <tr><td></td><td><strong>PCE</strong></td><td>DeepSeek-V4-Flash</td><td>10</td><td><strong>75.0</strong></td><td><strong>72.1</strong></td></tr>
+    <tr><td></td><td>GEA</td><td>DeepSeek-V4-Flash</td><td>10</td><td>70.0 ± 2.4</td><td>68.9</td></tr>
+    <tr><td></td><td><strong>PCE</strong></td><td>DeepSeek-V4-Flash</td><td>10</td><td><strong>75.0</strong> ± 0.0</td><td><strong>72.1</strong></td></tr>
     <tr class="group-start"><td>Polyglot</td><td>Aider<sup>†</sup></td><td>GPT-5 (high)</td><td>N/A</td><td>N/A</td><td>52.0</td></tr>
     <tr class="group-start"><td></td><td>DGM</td><td>o3-mini</td><td>80</td><td>—</td><td>30.7</td></tr>
     <tr><td></td><td>DGM<sup>‡</sup></td><td>Claude 3.5 Sonnet</td><td>80</td><td>—</td><td>33.3</td></tr>
@@ -427,20 +430,22 @@ already solves more than 90% of the tasks.
     <tr><td></td><td>DGM (GEA)<sup>†</sup></td><td>Haiku/Sonnet 4.5</td><td>40</td><td>—</td><td>68.3</td></tr>
     <tr><td></td><td>GEA<sup>†</sup></td><td>Haiku/Sonnet 4.5</td><td>20</td><td>—</td><td>88.3</td></tr>
     <tr class="group-start"><td></td><td>Initial</td><td>DeepSeek-V4.1-Flash</td><td>0</td><td>N/A</td><td>65.1</td></tr>
-    <tr><td></td><td>GEA</td><td>DeepSeek-V4.1-Flash</td><td>10</td><td>90.0</td><td>90.8</td></tr>
-    <tr><td></td><td><strong>PCE</strong></td><td>DeepSeek-V4.1-Flash</td><td>10</td><td><strong>100.0</strong></td><td><strong>96.7</strong></td></tr>
+    <tr><td></td><td>GEA</td><td>DeepSeek-V4.1-Flash</td><td>10</td><td>85.6 ± 4.2</td><td>90.8</td></tr>
+    <tr><td></td><td><strong>PCE</strong></td><td>DeepSeek-V4.1-Flash</td><td>10</td><td><strong>99.4</strong> ± 1.0</td><td><strong>96.7</strong></td></tr>
   </tbody>
 </table>
 </div>
 <div class="table-caption">
-  Table 1. Performance (%). Best: highest Held-in 60 search score. †: reported by GEA. ‡: model
+  Table 1. Performance (%). Best: highest Held-in 60 search score, mean ± sd over runs. †: reported by GEA. ‡: model
   transfer.
 </div>
 
 <p>
-The gains are not limited to a single search or evaluation. Across two independent SWE-bench runs
-for each method, both PCE runs achieve higher best search scores than either GEA run, as reported in
-Table 2. When the selected agents are independently evaluated 5 times on Held-in 60, PCE retains a
+The gains are not limited to a single search or evaluation. Figures 3a and 3b plot two SWE-bench runs
+and three Polyglot runs of each method. Every PCE run achieves a higher best search score than any
+GEA run on the same benchmark. The weakest PCE run still exceeds the strongest GEA run by 3.3 points
+on SWE-bench and 8.3 points on Polyglot. The advantage therefore does not rest on a single favorable
+run. When the selected agents are independently evaluated 5 times on Held-in 60, PCE retains a
 mean advantage of 4.0 percentage points on both benchmarks (Figure 3c). PCE also outperforms GEA on
 all three held-out task sets. Since held-out tasks constitute the majority of Overall 200 and
 Overall 225, these results show that the gains extend beyond the tasks used during evolution.
@@ -468,8 +473,9 @@ comparisons. Our main conclusion is based on the matched PCE and GEA runs.
 <figure style="margin-top: 0">
   <figcaption>
     Figure 3. Search scores and repeated-evaluation results on Held-in 60. (a, b) Best-so-far search
-    score across the main ten-generation run, with two children produced in each generation.
-    (c) Mean success rate of the shared initial agent and the selected GEA and PCE agents over five
+    score across the main ten-generation run, with two children produced in each generation. Lighter lines show the additional
+    independent runs of each method, one on SWE-bench and two on Polyglot. In the SWE-bench panel, the
+    early scores of the second GEA run lie below the axis range. (c) Mean success rate of the shared initial agent and the selected GEA and PCE agents over five
     independent evaluations after evolution.
   </figcaption>
 </figure>
@@ -489,22 +495,20 @@ variant outperforms GEA's best. The gains therefore extend beyond a single excep
 <div class="table-wrap">
 <table>
   <thead>
-    <tr><th>Benchmark</th><th>Method</th><th>Top-1 ↑</th><th>Top-3 min. ↑</th><th>Top-5 min. ↑</th><th>Union</th><th>Gap ↓</th></tr>
+    <tr><th>Benchmark</th><th>Method</th><th>Top-1 ↑</th><th>Top-3 min. ↑</th><th>Top-5 min. ↑</th><th>Union</th><th>Gap ↓</th><th>Consolidation ↑</th></tr>
   </thead>
   <tbody>
-    <tr class="group-start"><td>SWE-bench</td><td>GEA</td><td>70.0 ± 2.4</td><td>66.7 ± 2.4</td><td>66.7 ± 2.4</td><td>84.2 ± 3.5</td><td>14.2 ± 1.2</td></tr>
-    <tr><td></td><td>PCE</td><td><strong>75.0</strong> ± 0.0</td><td><strong>72.5</strong> ± 1.2</td><td><strong>70.8</strong> ± 1.2</td><td>85.0 ± 0.0</td><td><strong>10.0</strong> ± 0.0</td></tr>
-    <tr class="group-start"><td>Polyglot</td><td>GEA</td><td>90.0</td><td>85.0</td><td>83.3</td><td>100.0</td><td>10.0</td></tr>
-    <tr><td></td><td>PCE</td><td><strong>100.0</strong></td><td><strong>98.3</strong></td><td><strong>96.7</strong></td><td>100.0</td><td><strong>0.0</strong></td></tr>
+    <tr class="group-start"><td>SWE-bench</td><td>GEA</td><td>70.0 ± 2.4</td><td>66.7 ± 2.4</td><td>66.7 ± 2.4</td><td>84.2 ± 3.5</td><td>14.2 ± 1.2</td><td>33.1 ± 10.7</td></tr>
+    <tr><td></td><td>PCE</td><td><strong>75.0</strong> ± 0.0</td><td><strong>72.5</strong> ± 1.2</td><td><strong>70.8</strong> ± 1.2</td><td>85.0 ± 0.0</td><td><strong>10.0</strong> ± 0.0</td><td><strong>35.6</strong> ± 9.0</td></tr>
+    <tr class="group-start"><td>Polyglot</td><td>GEA</td><td>85.6 ± 4.2</td><td>81.1 ± 3.5</td><td>78.3 ± 4.4</td><td>100.0 ± 0.0</td><td>14.4 ± 4.2</td><td>44.6 ± 7.1</td></tr>
+    <tr><td></td><td>PCE</td><td><strong>99.4</strong> ± 1.0</td><td><strong>98.9</strong> ± 1.0</td><td><strong>97.2</strong> ± 1.0</td><td>100.0 ± 0.0</td><td><strong>0.6</strong> ± 1.0</td><td><strong>72.9</strong> ± 12.0</td></tr>
   </tbody>
 </table>
 </div>
 <div class="table-caption">
-  Table 2. Leading-variant performance and population coverage on Held-in 60 (%). Top-1 is the
-  highest search score, and Top-<i>k</i> min. is the lowest score among the top-<i>k</i> evolved
-  variants. Union is the fraction of tasks solved by at least one evaluated child, and Gap is Union
-  minus Top-1 in percentage points. SWE-bench reports mean ± sample standard deviation over two runs;
-  Polyglot reports one run.
+  Table 2. Leading-variant performance and population coverage on Held-in 60 (%), mean ± sd over
+  runs. Top-<i>k</i> min. is the <i>k</i>-th highest search score, Union counts tasks solved by any
+  child, and Gap is Union minus Top-1.
 </div>
 
 <p>
@@ -512,8 +516,9 @@ PCE also brings its leading agents closer to what the population collectively so
 coverage measures the fraction of tasks solved by at least one evaluated variant, while the coverage
 gap is the difference between this union and the best-agent score. On SWE-bench, PCE and GEA achieve
 similar population coverage, but PCE reduces the mean gap from 14.2 to 10.0 percentage points. On
-Polyglot, both populations cover all 60 held-in tasks. GEA retains a 10.0-point gap, whereas PCE
-closes the gap with a single agent that solves the full task set.
+Polyglot, both populations cover all 60 held-in tasks in every run. GEA retains a mean gap of 14.4
+points, whereas PCE reduces it to 0.6 points. In two of the three runs, a single PCE agent solves
+the full task set, and in the remaining run the best agent misses one task.
 </p>
 <p>
 The reduction does not result from PCE exploring a substantially larger set of solvable tasks.
@@ -521,30 +526,41 @@ Instead, with similar population coverage, PCE produces leading variants that ca
 successful outcomes distributed across the population. This result directly supports the central
 motivation for using population-wide evidence during agent evolution.
 </p>
+<p>
+PCE children also acquire more of what earlier population members solve. Table 2 reports this as
+the consolidation rate. On SWE-bench, PCE achieves a consolidation rate of 35.6%, compared with
+33.1% for GEA. On Polyglot, the rate is 72.9% for PCE against 44.6% for GEA, and the lowest PCE run
+exceeds the highest GEA run. Successes found by other population members therefore reach PCE's
+children more often, which provides direct evidence of cross-agent consolidation.
+</p>
 
 <h3>③ Value of Population-Wide Evidence</h3>
-<p><strong>RQ3: Does population-wide evidence provide gains beyond additional parent-only analysis?</strong></p>
+<p><strong>RQ3: What in population-wide evidence drives the gains of PCE?</strong></p>
 <p>
-We conduct an ablation on Polyglot that compares GEA, parent-only distillation, and PCE under the
-same evolution and evaluation settings. Parent-only distillation uses the same distillation model,
-tools, step budget, and output format as PCE, but restricts its inputs to the selected parents' task
-records, modification histories, and source code. This control separates the value of
-population-wide evidence from the effect of adding another analysis step.
+We conduct ablations on Polyglot under the same evolution and evaluation settings as the main run,
+and the variants differ only in the evidence that diagnosis receives. Besides parent-only
+distillation, member summaries condense the record of every population member on the task into a
+separate summary, so diagnosis sees the whole population but receives no population-level field.
+Three further variants keep outcome evidence, the cross-agent observation, or both, and the full
+population block of PCE adds candidate files. These controls separate the value of population-level
+evidence from the effect of an additional analysis step and from access to the records of the whole
+population.
 </p>
 <div class="key-number">
 <strong>Population-wide evidence improves performance beyond parent-only distillation.</strong>
 </div>
 <p>
-As shown in Table 3, parent-only distillation achieves a best search score of 91.7%, close to GEA's
-90.0%. Both methods obtain the same mean success rate of 92.0% across 5 evaluations of their selected
-agents. PCE instead reaches a perfect search score and retains a mean success rate of 96.0%,
-4 percentage points above both alternatives.
+As shown in Table 3, parent-only distillation achieves a best search score of 91.7%, slightly above
+GEA's 90.0% in the main run. Both methods obtain the same mean success rate of 92.0% across 5
+evaluations of their selected agents. PCE instead reaches a perfect search score in the main run,
+99.4% on average over three runs, and retains a mean success rate of 96.0%, 4 percentage points
+above both alternatives.
 </p>
 
 <div class="table-wrap">
 <table>
   <thead>
-    <tr><th>Method</th><th>Best</th><th>Mean ± sd</th><th>Intersection</th><th>Union</th></tr>
+    <tr><th>Method</th><th>Best</th><th>Repeat mean</th><th>Intersection</th><th>Union</th></tr>
   </thead>
   <tbody>
     <tr><td>GEA</td><td>90.0</td><td>92.0 ± 2.5</td><td>85.0</td><td>100.0</td></tr>
@@ -555,36 +571,61 @@ agents. PCE instead reaches a perfect search score and retains a mean success ra
 </div>
 <div class="table-caption">
   Table 3. Parent-only distillation ablation on Polyglot Held-in 60 (%). Best is the highest search
-  score during evolution. The selected agent is then evaluated five times. Mean ± sd summarizes these
-  evaluations, Intersection is the fraction of tasks solved in every evaluation, and Union is the
-  fraction solved at least once. Parent-only distillation matches PCE's distillation model, tools,
-  budget, and output format but uses only evidence from the selected parents.
+  score in the main run, and the other columns summarize five evaluations of each method's selected
+  agent.
 </div>
 
 <p>
 The repeated evaluations further show that PCE solves more tasks consistently. All three methods
 solve nearly the full task set at least once, as reflected by their similar Union scores. PCE
 nevertheless achieves the highest Intersection, solving 88.3% of the tasks in every evaluation,
-compared with 85.0% for GEA and 78.3% for parent-only distillation. Within this Polyglot ablation,
-the results show that the gains come from broadening the evidence beyond the selected parents, rather
-than from additional analysis alone.
+compared with 85.0% for GEA and 78.3% for parent-only distillation. The gains of PCE therefore come
+from the evidence that distillation supplies rather than from an additional analysis step alone.
+</p>
+<div class="key-number">
+<strong>Population-level evidence, rather than more records or more analysis, drives the gains.</strong>
+</div>
+<p>
+The variants fall into two groups according to whether diagnosis receives population-level
+evidence, as Figure 4a shows. Whether it keeps outcome evidence, the cross-agent observation, or the
+full block, every variant with population-level evidence scores between 95.0% and 98.3% at
+generation 2 and ends between 98.3% and 100%. These variants end within one task of each other, so
+the fields provide the same population-level view rather than separate contributions. Every variant
+without it scores between 80.0% and 85.0% at generation 2 and ends between 90.0% and 93.3%, whether
+diagnosis sees only the parents or a summary of every member. More records therefore do not
+substitute for population-level evidence.
 </p>
 <p>
-<strong>Effect on diagnostic proposals.</strong>
-We also conduct a fixed-context probe to examine how the supplied evidence changes diagnosis. Across
-3 SWE-bench contexts, we hold the focal parent, source code, patch history, and task record fixed,
-vary the auxiliary evidence, and generate five proposals per condition. Adding a population block
-changes the main target of diagnosis in two of three contexts. On Sphinx-7748 task, proposals
-addressing truncation recovery increase from two of five to all five. On Sphinx-9229 task, the
-population block produces two proposals for a post-episode patch check, while GEA and the
-raw-trajectory controls produce only instruction-level changes. No comparable shift appears on
-Sphinx-8638. These results suggest that a population block can redirect diagnosis from local
-instruction refinement toward changes in the agent’s execution logic. They also indicate that
-distilling cross-agent patterns can provide guidance that is not reproduced by simply supplying
-additional raw trajectories. Since the proposals are not implemented or evaluated, this analysis
-characterizes how population evidence affects diagnostic behavior rather than its downstream
-performance.
+Fast convergence shows that the evidence behind the key modifications is already present in the
+early records of the population, and population-level evidence lets diagnosis find it. Without this
+evidence, the best score keeps rising in isolated steps throughout the run. Parent-only distillation
+and member summaries both still improve in the last generation, and GEA in Figure 4b still improves
+at generation 13. Each of these steps depends on a child that happens to act on the relevant
+evidence. The gains of PCE therefore come from population-level evidence rather than from more
+records or an additional analysis step.
 </p>
+
+<div class="three-up">
+  <figure>
+    <img src="figs/fig_rq5c_ablation.svg" alt="Figure 4a">
+    <figcaption>(a) Population block ablation</figcaption>
+  </figure>
+  <figure>
+    <img src="figs/fig_rq5a_20gen.svg" alt="Figure 4b">
+    <figcaption>(b) Doubled generations</figcaption>
+  </figure>
+  <figure>
+    <img src="figs/fig_rq5b_transfer.svg" alt="Figure 4c">
+    <figcaption>(c) Execution model transfer</figcaption>
+  </figure>
+</div>
+<figure style="margin-top: 0">
+  <figcaption>
+    Figure 4. Results on Polyglot Held-in 60. (a) Best-so-far search score of the population block
+    ablations. (b) Best-so-far search score and lineages of the best agents over twenty generations.
+    (c) Success rate of the initial and PCE agents under eight execution models.
+  </figcaption>
+</figure>
 
 <h3>④ Performance Gains and Token Cost</h3>
 <p><strong>RQ4: Does PCE achieve better performance at the cost of higher token consumption?</strong></p>
@@ -620,8 +661,7 @@ benchmarks. Its performance gains therefore do not come from a larger inference 
   Table 4. Performance and resource use in the main evolution runs. Token and request counts are
   provider totals for the complete run, covering task execution, diagnosis, self-modification, and
   population distillation. Distillation calls report the number made by the distillation agent. An
-  evaluation episode is one task attempt, and trajectory length is measured in characters. We report
-  tokens and requests rather than monetary cost because provider prices vary over time.
+  evaluation episode is one task attempt, and trajectory length is measured in characters. 
 </div>
 
 <p>
@@ -639,6 +679,33 @@ an explicit patch check and bounded repair procedure. This case does not by itse
 aggregate savings, but it illustrates how population-guided modifications can prevent inefficient
 behavior from recurring. PCE therefore improves both performance and token efficiency, rather than
 exchanging a larger inference budget for stronger agents.
+</p>
+
+<h3>⑤ Generality Across Settings</h3>
+<p><strong>RQ5: Does the advantage of PCE hold across different settings?</strong></p>
+<div class="key-number">
+<strong>Yes. The advantage of PCE persists when evolution runs twice as long.</strong>
+</div>
+<p>
+As Figure 4b shows, we extend one Polyglot run of each method to twenty generations, twice the main
+schedule, and keep the other settings fixed. PCE reaches a perfect search score at generation 2. GEA
+still finds its best agent at generation 13, eleven generations later, and that agent reaches 91.7%.
+The best agents of PCE all descend from a single early lineage. This lineage yields an agent with a
+perfect score on four occasions, the last at generation 11, when the population has 23 members. PCE
+therefore converges faster and keeps its lead over twice as many generations, and population
+distillation keeps producing strong agents as the population grows.
+</p>
+<div class="key-number">
+<strong>Yes. The harness evolved by PCE also improves agents under other execution models.</strong>
+</div>
+<p>
+We run the PCE agent evolved with DeepSeek Flash under seven other execution models from five
+providers, without further evolution, as Figure 4c shows. This setting examines whether the evolved
+harness transfers beyond the model used during evolution. The PCE agent outperforms the initial
+agent under every model, by 25.7 percentage points on average. Under Claude Haiku 5.5, it solves all
+60 tasks, above its mean of 96.0% under DeepSeek Flash, although the initial agent starts lower with
+Haiku, at 66.7% against 72.3%. The improvements that PCE finds from population-wide evidence
+therefore lie in the harness and carry over to models it never uses during evolution.
 </p>
 
 <h2>Citation</h2>
